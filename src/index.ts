@@ -7,8 +7,8 @@ import { newUI } from './ui.js'
 const cards: CardStore = loadCards('cards/designpatterns.csv')
 
 // Change the next two lines to test your implementation
-// const organizer = newMostMistakesFirstSorter()
-const organizer = newRecentMistakesFirstSorter()
+const organizer = newMostMistakesFirstSorter()
+// const organizer = newRecentMistakesFirstSorter()
 
 const cardDeck = newCardDeck(cards.getAllCards(), organizer)
 newUI().studyCards(cardDeck)

@@ -26,10 +26,10 @@ function newRecentMistakesFirstSorter (): CardOrganizer {
         const bLast = bResults[bResults.length - 1]
 
         if (aLast === bLast) return 0
-        if (aLast === false && bLast !== false) return -1
-        if (bLast === false && aLast !== false) return 1
-        
-        return 0        
+        if (!aLast && bLast) return -1
+        if (!bLast && aLast) return 1
+
+        return 0
       })
     }
   }
