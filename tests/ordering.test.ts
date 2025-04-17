@@ -74,4 +74,68 @@ describe('Test prioritization', () => {
     expect(cardsSorted[6]).toEqual(cardStatus7)
     expect(cardsSorted[7]).toEqual(cardStatus8)
   })
+
+  test('CardStatus basic methods work correctly', () => {
+    const card = newFlashCard('Q', 'A')
+    const status = newCardStatus(card)
+  
+    expect(status.getCard()).toBe(card)
+    expect(status.getResults()).toEqual([])
+  
+    status.recordResult(true)
+    status.recordResult(false)
+    expect(status.getResults()).toEqual([true, false])
+  
+    status.clearResults()
+    expect(status.getResults()).toEqual([]) // Confirm reset
+  })
+  
+  test('FlashCard basic functionality', () => {
+    const card = newFlashCard('What is AI?', 'Artificial Intelligence')
+  
+    // getQuestion and getAnswer
+    expect(card.getQuestion()).toBe('What is AI?')
+    expect(card.getAnswer()).toBe('Artificial Intelligence')
+  
+    // checkSuccess - exact match
+    expect(card.checkSuccess('Artificial Intelligence')).toBe(true)
+  
+    // checkSuccess - extra spaces
+    expect(card.checkSuccess('  Artificial Intelligence  ')).toBe(true)
+  
+    // checkSuccess - case insensitive
+    expect(card.checkSuccess('artificial intelligence')).toBe(true)
+  
+    // checkSuccess - incorrect
+    expect(card.checkSuccess('Machine Learning')).toBe(false)
+  
+    // toString
+    expect(card.toString()).toBe('FlashCard[What is AI?, Artificial Intelligence]')
+  
+    // equals - true
+    const card2 = newFlashCard('What is AI?', 'Artificial Intelligence')
+    expect(card.equals(card2)).toBe(true)
+  
+    // equals - false (different question)
+    const card3 = newFlashCard('Define AI', 'Artificial Intelligence')
+    expect(card.equals(card3)).toBe(false)
+  
+    // equals - false (different answer)
+    const card4 = newFlashCard('What is AI?', 'A fancy robot')
+    expect(card.equals(card4)).toBe(false)
+  })
+
+  test('sorter fallback return 0 when comparison is inconclusive', () => {
+    const cardA = newCardStatus(newFlashCard("Q1", "A1"))
+    const cardB = newCardStatus(newFlashCard("Q2", "A2"))
+  
+    cardA.recordResult(true)  // aLast = true
+    // cardB has no history     bLast = undefined
+  
+    const sorter = newRecentMistakesFirstSorter()
+    const sorted = sorter.reorganize([cardA, cardB])
+  
+    expect(sorted).toContain(cardA)
+    expect(sorted).toContain(cardB)
+  })  
 })

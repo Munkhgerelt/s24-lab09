@@ -18,9 +18,21 @@ function newRecentMistakesFirstSorter (): CardOrganizer {
      * @return The ordered cards.
      */
     reorganize: function (cards: CardStatus[]): CardStatus[] {
-      return []
+      return cards.slice().sort((a, b) => {
+        const aResults = a.getResults()
+        const bResults = b.getResults()
+
+        const aLast = aResults[aResults.length - 1]
+        const bLast = bResults[bResults.length - 1]
+
+        if (aLast === bLast) return 0
+        if (aLast === false && bLast !== false) return -1
+        if (bLast === false && aLast !== false) return 1
+        
+        return 0        
+      })
     }
   }
-};
+}
 
 export { newRecentMistakesFirstSorter }
