@@ -125,12 +125,12 @@ describe('Test prioritization', () => {
     expect(card.equals(card4)).toBe(false)
   })
 
-  test('sorter fallback return 0 when comparison is inconclusive', () => {
+  test('sorter fallback return 0 when aLast is true and bLast is false', () => {
     const cardA = newCardStatus(newFlashCard("Q1", "A1"))
     const cardB = newCardStatus(newFlashCard("Q2", "A2"))
   
     cardA.recordResult(true)  // aLast = true
-    // cardB has no history     bLast = undefined
+    cardB.recordResult(false) // bLast = false
   
     const sorter = newRecentMistakesFirstSorter()
     const sorted = sorter.reorganize([cardA, cardB])
