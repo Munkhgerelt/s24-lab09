@@ -27,7 +27,7 @@ function newRecentMistakesFirstSorter (): CardOrganizer {
 
         if (aLast === bLast) return 0
         if (!aLast && bLast) return -1
-        return 1        
+        return 1
       })
     }
   }
